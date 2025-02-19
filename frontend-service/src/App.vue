@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" class="h-full flex flex-col">
     <NavBar />
-    <div class="content-wrapper">
+    <div class="content-wrapper flex-grow overflow-auto p-4 bg-gray-100">
       <router-view></router-view>
     </div>
   </div>
@@ -17,17 +17,3 @@ export default {
   }
 }
 </script>
-
-<style>
-body {
-  font-family: var(--font-family);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-  padding: 0;
-}
-
-.content-wrapper {
-  padding: 2rem;
-}
-</style>

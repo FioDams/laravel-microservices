@@ -1,22 +1,23 @@
 <template>
-  <div class="p-d-flex p-jc-center">
-    <div class="p-col-12 p-md-6 p-lg-4">
-      <Card>
+  <div class="flex justify-center items-center h-full">
+    <div class="w-full max-w-md">
+      <Card class="bg-white shadow-md rounded-lg m-5">
         <template #title>
-          Login
+          <h2 class="text-2xl font-bold text-center text-gray-800">Login</h2>
         </template>
         <template #content>
-          <form @submit.prevent="handleLogin">
-            <div class="p-fluid">
-              <div class="p-field">
-                <label for="email">Email</label>
-                <InputText id="email" v-model="email" type="email" required />
+          <form @submit.prevent="handleLogin" class="space-y-6">
+            <div class="space-y-4">
+              <div class="space-y-1">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <InputText id="email" v-model="email" type="email" required class="w-full" />
               </div>
-              <div class="p-field">
-                <label for="password">Password</label>
-                <Password id="password" v-model="password" :feedback="false" required />
+              <div class="space-y-1">
+                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                <Password id="password" v-model="password" :feedback="false" required class="w-full"
+                  :inputClass="'w-full'" />
               </div>
-              <Button type="submit" label="Login" />
+              <Button type="submit" label="Login" class="w-full" />
             </div>
           </form>
         </template>
@@ -26,12 +27,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import axios from 'axios'
+import { useAuthStore } from '../stores/auth'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
+import DatePicker from 'primevue/datepicker';
 
 export default {
   name: 'Login',
@@ -39,23 +40,27 @@ export default {
     Card,
     InputText,
     Password,
-    Button
+    Button,
+    DatePicker,
   },
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      date: null,
     }
   },
+  setup() {
+    const authStore = useAuthStore();
+    return { authStore }
+  },
   methods: {
-    ...mapActions(['login']),
     async handleLogin() {
       try {
-        const response = await axios.post('http://localhost/auth/api/login', {
+        await this.authStore.login({
           email: this.email,
           password: this.password
-        })
-        this.login({ token: response.data.access_token, user: response.data.user })
+        });
         this.$router.push('/dashboard')
       } catch (error) {
         console.error(error)

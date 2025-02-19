@@ -2,6 +2,7 @@
   "name": "frontend-service",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
@@ -13,7 +14,9 @@
   "description": "",
   "dependencies": {
     "@primevue/themes": "^4.2.5",
+    "@tailwindcss/vite": "^4.0.7",
     "axios": "^1.7.9",
+    "pinia": "^3.0.1",
     "primeicons": "^7.0.0",
     "primevue": "^4.2.5",
     "vue": "^3.5.13",
@@ -22,6 +25,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "tailwindcss": "^4.0.7",
     "vite": "^6.1.1"
   }
 }
