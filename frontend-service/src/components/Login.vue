@@ -14,10 +14,11 @@
               </div>
               <div class="space-y-1">
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <Password id="password" v-model="password" :feedback="false" required class="w-full"
+                <Password id="password" v-model="password" :feedback="false" toggleMask required class="w-full"
                   :inputClass="'w-full'" />
               </div>
-              <Button type="submit" label="Login" class="w-full" />
+              <small class="error-message" v-if="authStore.loginError">{{ authStore.loginError }}</small>
+              <Button type="submit" label="Login" class="w-full" :loading="loading" />
             </div>
           </form>
         </template>
@@ -27,6 +28,8 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import Card from 'primevue/card'
 import InputText from 'primevue/inputtext'
@@ -51,8 +54,24 @@ export default {
     }
   },
   setup() {
+    const router = useRouter();
     const authStore = useAuthStore();
-    return { authStore }
+
+    const email = ref('')
+    const password = ref('')
+    const loading = ref(false)
+
+    const handleLogin = async () => {
+      loading.value = true
+      const success = await authStore.login({ email: email.value, password: password.value })
+      loading.value = false
+
+      if (success) {
+        router.push('/dashboard')
+      }
+    }
+
+    return { email, password, loading, handleLogin, authStore }
   },
   methods: {
     async handleLogin() {
@@ -70,3 +89,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.error-message {
+  color: red;
+  display: block;
+  margin-bottom: 10px;
+}
+</style>
