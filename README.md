@@ -1,0 +1,1 @@
+An application skeleton in microservices architecture
